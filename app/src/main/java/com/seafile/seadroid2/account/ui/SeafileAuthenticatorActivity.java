@@ -115,6 +115,10 @@ public class SeafileAuthenticatorActivity extends BaseAuthenticatorActivity {
                 navigateUpOrBack(SeafileAuthenticatorActivity.this, null);
             }
         });
+
+        Intent intent = new Intent(SeafileAuthenticatorActivity.this, AccountDetailActivity.class);
+        intent.putExtras(getIntent());
+        startActivityForResult(intent, SeafileAuthenticatorActivity.REQ_SIGNUP);
     }
 
     @Override

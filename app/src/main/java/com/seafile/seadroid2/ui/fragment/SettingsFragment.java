@@ -402,28 +402,6 @@ public class SettingsFragment extends CustomPreferenceFragment {
         refreshCameraUploadView();
 //        refreshContactsView();
 
-        // App Version
-        try {
-            appVersion = mActivity.getPackageManager().getPackageInfo(mActivity.getPackageName(), 0).versionName;
-        } catch (NameNotFoundException e) {
-            Log.e(DEBUG_TAG, "app version name not found exception");
-            appVersion = getString(R.string.not_available);
-        }
-        findPreference(SettingsManager.SETTINGS_ABOUT_VERSION_KEY).setSummary(appVersion);
-
-        // About author
-        findPreference(SettingsManager.SETTINGS_ABOUT_AUTHOR_KEY).setOnPreferenceClickListener(new OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
-                // builder.setIcon(R.drawable.icon);
-                builder.setMessage(Html.fromHtml(getString(R.string.settings_about_author_info, appVersion)));
-                builder.show();
-                return true;
-            }
-        });
-
         // Cache size
         calculateCacheSize();
 
@@ -451,6 +429,9 @@ public class SettingsFragment extends CustomPreferenceFragment {
             cCacheCategory.removePreference(findPreference(SettingsManager.SETTINGS_CACHE_DIR_KEY));
         }
 
+        PreferenceScreen screen = getPreferenceScreen();
+        Preference pref = getPreferenceManager().findPreference(SettingsManager.PRIVACY_CATEGORY_KEY);
+        screen.removePreference(pref);
     }
 
     //contacts  backup

@@ -77,8 +77,6 @@ public final class SettingsManager {
     //contacts
     public static final String CONTACTS_UPLOAD_CATEGORY_KEY = "category_contacts_upload_key";
     public static final String CONTACTS_UPLOAD_SWITCH_KEY = "contacts_upload_switch_key";
-    public static final String SETTINGS_ABOUT_VERSION_KEY = "settings_about_version_key";
-    public static final String SETTINGS_ABOUT_AUTHOR_KEY = "settings_about_author_key";
     public static final String CONTACTS_UPLOAD_REPO_KEY = "contacts_upload_repo_key";
     public static final String CONTACTS_UPLOAD_REPO_TIME_KEY = "contacts_upload_repo_time_key";
     public static final String CONTACTS_UPLOAD_REPO_BACKUP_KEY = "contacts_upload_repo_backup_key";

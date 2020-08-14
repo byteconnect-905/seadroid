@@ -5,6 +5,7 @@
               android:orientation="vertical">
     <include layout="@layout/toolbar_actionbar" /> <!-- placeholder, empty except on L -->
     <CheckBox
+            android:visibility="gone"
             android:id="@+id/https_checkbox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -21,6 +22,7 @@
             android:gravity="center"
             android:orientation="vertical"
             android:paddingBottom="@dimen/form_padding_bottom"
+            android:layout_marginTop="@dimen/cb_padding_top"
             android:paddingTop="@dimen/form_padding_top">
 
         <android.support.design.widget.TextInputLayout

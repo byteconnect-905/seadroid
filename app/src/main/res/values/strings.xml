@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-  <string name="app_name" translatable="false">Seafile</string>
+  <string name="app_name" translatable="false">云桌面网盘</string>
   <string name="app_url" translatable="false">http://seafile.com</string>
   <string name="welcome_to_seafile">Welcome to Seafile</string>
   <string name="select_account">Choose an account to start</string>

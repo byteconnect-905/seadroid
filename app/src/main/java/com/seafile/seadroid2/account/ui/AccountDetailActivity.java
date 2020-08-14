@@ -121,7 +121,7 @@ public class AccountDetailActivity extends BaseActivity implements Toolbar.OnMen
                 httpsCheckBox.setChecked(true);
 
             serverText.setText(server);
-            emailText.setText(email);
+            emailText.setText(name);
             emailText.requestFocus();
             seahubUrlHintText.setVisibility(View.GONE);
 

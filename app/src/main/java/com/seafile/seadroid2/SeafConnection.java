@@ -70,13 +70,15 @@ public class SeafConnection {
     }
 
     private HttpRequest prepareApiGetRequest(String apiPath, Map<String, ?> params) throws IOException {
-        HttpRequest req = HttpRequest.get(account.server + apiPath, params, false);
+        String path = apiPath.startsWith("http") ? apiPath : account.panServer + apiPath;
+        HttpRequest req = HttpRequest.get(path, params, false);
         setRequestCommon(req);
         return req;
     }
 
     private HttpRequest prepareApiPutRequest(String apiPath, Map<String, ?> params) throws IOException {
-        HttpRequest req = HttpRequest.put(account.server + apiPath, params, false);
+        String path = apiPath.startsWith("http") ? apiPath : account.panServer + apiPath;
+        HttpRequest req = HttpRequest.put(path, params, false);
         setRequestCommon(req);
         return req;
     }
@@ -135,7 +137,8 @@ public class SeafConnection {
      */
     private HttpRequest prepareApiPostRequest(String apiPath, boolean withToken, Map<String, ?> params, boolean encode)
             throws HttpRequestException {
-        HttpRequest req = HttpRequest.post(account.server + apiPath, params, encode)
+        String path = apiPath.startsWith("http") ? apiPath : account.panServer + apiPath;
+        HttpRequest req = HttpRequest.post(path, params, encode)
                 .followRedirects(true)
                 .connectTimeout(CONNECTION_TIMEOUT);
 
@@ -148,7 +151,8 @@ public class SeafConnection {
 
     private HttpRequest prepareApiDeleteRequest(String apiPath, Map<String, ?> params)
             throws HttpRequestException {
-        HttpRequest req = HttpRequest.delete(account.server + apiPath, params, false)
+        String path = apiPath.startsWith("http") ? apiPath : account.panServer + apiPath;
+        HttpRequest req = HttpRequest.delete(path, params, false)
                 .followRedirects(true)
                 .connectTimeout(CONNECTION_TIMEOUT);
 
@@ -166,8 +170,7 @@ public class SeafConnection {
         boolean withAuthToken = false;
         HttpRequest req = null;
         try {
-            req = prepareApiPostRequest("api2/auth-token/", false, null);
-            // Log.d(DEBUG_TAG, "Login to " + account.server + "api2/auth-token/");
+            req = prepareApiPostRequest(account.server + "api/v1/pan/auth-token", false, null);
 
             if (!TextUtils.isEmpty(authToken)) {
                 req.header("X-Seafile-OTP", authToken);
@@ -212,6 +215,7 @@ public class SeafConnection {
             if (obj == null)
                 return false;
             account.token = obj.getString("token");
+            setPanServer();
             return true;
         } catch (SeafException e) {
             throw e;
@@ -225,17 +229,38 @@ public class SeafConnection {
         }
     }
 
+    private void setPanServer() throws SeafException {
+        try {
+            HttpRequest req = prepareApiGetRequest(account.server + "api/v1/pan/pan-server");
+            checkRequestResponseStatus(req, HttpURLConnection.HTTP_OK);
+            String result = new String(req.bytes(), "UTF-8");
+            JSONObject obj = Utils.parseJsonObject(result);
+            String panServer = obj.getString("panServer");
+            if (panServer == null || panServer == "") {
+                return;
+            }
+            account.panServer = panServer + "/";
+        } catch (SeafException e) {
+            throw e;
+        } catch (HttpRequestException e) {
+            throw getSeafExceptionFromHttpRequestException(e);
+        } catch (IOException e) {
+            throw SeafException.networkException;
+        }  catch (JSONException e) {
+            throw SeafException.illFormatException;
+        }
+    }
+
     /**
      * <p>
      * get Account info, which consists of three fields, usage, total and email.
      * </p>
      * use GET to send HTTP request.
      *
-     * @return
      * @throws SeafException
      */
     public String getAccountInfo() throws SeafException {
-
+        setPanServer();
         String result;
         try {
             HttpRequest req = prepareApiGetRequest("api2/account/info/");
@@ -255,6 +280,7 @@ public class SeafConnection {
     public String getServerInfo() throws SeafException {
 
         String result;
+        setPanServer();
         try {
             HttpRequest req = prepareApiGetRequest("api2/server-info/");
             checkRequestResponseStatus(req, HttpURLConnection.HTTP_OK);
@@ -280,6 +306,7 @@ public class SeafConnection {
 
     public String getRepos() throws SeafException {
         HttpRequest req = null;
+        setPanServer();
         try {
             req = prepareApiGetRequest("api2/repos/");
             checkRequestResponseStatus(req, HttpURLConnection.HTTP_OK);
@@ -742,7 +769,7 @@ public class SeafConnection {
     public String  getEncryptRepo(String repoID) throws SeafException {
         Response response = null;
         try {
-            String url = account.server + "api2/repos/" + repoID;
+            String url = account.panServer + "api2/repos/" + repoID;
             Request request = new Request.Builder()
                     .url(url)
                     .header("Authorization", "Token " + account.token)

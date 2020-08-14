@@ -24,6 +24,7 @@ public class Account implements Parcelable, Comparable<Account> {
 
     public final Boolean is_shib;
 
+    public String panServer;
     public String token;
     public String sessionKey;
 
