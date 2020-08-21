@@ -24,12 +24,12 @@ public class SeafStarredFile implements SeafItem {
         SeafStarredFile starredFile = new SeafStarredFile();
         try {
             starredFile.repoID = obj.optString("repo_id");
-            starredFile.mtime = SystemSwitchUtils.parseISODateTime(obj.optString("mtime"));
+            starredFile.mtime = obj.optLong("mtime");
             starredFile.path = obj.optString("path");
-            starredFile.obj_name = obj.optString("obj_name");
+            starredFile.obj_name = obj.optString("file_name");
             starredFile.size = obj.optLong("size");
-            starredFile.repo_encrypted = obj.optBoolean("repo_encrypted");
-            boolean type = obj.optBoolean("is_dir");
+            starredFile.repo_encrypted = false;
+            boolean type = obj.optBoolean("dir");
             if (!type) {
                 starredFile.type = FileType.FILE;
             } else

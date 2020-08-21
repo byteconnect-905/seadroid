@@ -141,7 +141,8 @@ public class BrowserActivity extends BaseActivity
     public static final int INDEX_ACTIVITIES_TAB = 2;
 
     private static final int[] ICONS = new int[] {
-            R.drawable.tab_library,
+            R.drawable.tab_library, R.drawable.tab_starred,
+            R.drawable.tab_activity
     };
 
     private FetchFileDialog fetchFileDialog = null;
@@ -713,6 +714,16 @@ public class BrowserActivity extends BaseActivity
                         reposFragment = new ReposFragment();
                     }
                     return reposFragment;
+                case 1:
+                    if (starredFragment == null) {
+                        starredFragment = new StarredFragment();
+                    }
+                    return starredFragment;
+                case 2:
+                    if (activitieFragment == null) {
+                        activitieFragment = new ActivitiesFragment();
+                    }
+                    return activitieFragment;
                 default:
                     return new Fragment();
             }
@@ -723,6 +734,10 @@ public class BrowserActivity extends BaseActivity
             switch (position) {
                 case 0:
                     return getString(R.string.tabs_library).toUpperCase();
+                case 1:
+                    return getString(R.string.tabs_starred).toUpperCase();
+                case 2:
+                    return getString(R.string.tabs_activity).toUpperCase();
 
                 default:
                     return null;
